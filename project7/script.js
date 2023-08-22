@@ -1,67 +1,43 @@
-const tagsEl = document.getElementById('tags');
-const textarea = document.getElementById('textarea');
+const result = document.getElementById('result');
+const filter = document.getElementById('filter');
+const listItems = [];
 
-textarea.focus();
 
-textarea.addEventListener("keyup", (e) => {
-  createTags(e.target.value);
+getData();
 
-  // Check whenever there's anything in e.target.value
-  if (e.key === "Enter" && e.target.value.trim()) {
-    setTimeout(() => {
-      e.target.value = "";
-    }, 10);
+filter.addEventListener('input', (e) => filterData(e.target.value));
 
-    randomSelect();
-  }
-})
+async function getData() {
+  const res = await fetch('https://randomuser.me/api?results=50');
 
-function createTags(input) {
-  const tags = input.split(',').filter(tag => tag.trim() !== '').map(tag => tag.trim());
+  const {results} = await res.json();
 
-  tagsEl.innerHTML = '';
+  // Clear result
+  result.innerHTML = '';
 
-  tags.forEach(tag => {
-    const tagEl = document.createElement('div');
-    tagEl.classList.add("tag");
-    tagEl.innerText = tag;
-    tagsEl.appendChild(tagEl);
+  results.forEach((user) => {
+    const li = document.createElement('li');
+    listItems.push(li);
+
+    li.innerHTML = `
+      <img src="${user.picture.large}" alt="${user.name.first} ${user.name.last}">
+      <div class="user-info">
+        <h4>${user.name.first} ${user.name.last}</h4>
+        <p>${user.location.city}, ${user.location.country}</p>
+      </div>
+    `;
+
+    result.appendChild(li);
   });
 }
 
-function randomSelect() {
-  const times = 30;
-
-  const interval = setInterval(() => {
-    const randomTag = pickRandomTag();
-
-    highlightTag(randomTag);
-
-    setTimeout(() => {
-      unHighlightTag(randomTag);
-    }, 100);
-
-  }, 100);
-
-  setTimeout(() => {
-    clearInterval(interval);
-
-    setTimeout(() => {
-      const randomTag = pickRandomTag();
-      highlightTag(randomTag);
-    }, 100);
-  }, times * 100);
-}
-
-function pickRandomTag() {
-  const tags = document.querySelectorAll(".tag");
-  return tags[Math.floor(Math.random() * tags.length)];
-}
-
-function highlightTag(tag) {
-  tag.classList.add("highlight");
-}
-
-function unHighlightTag(tag) {
-  tag.classList.remove("highlight");
+function filterData(searchTerm) {
+  listItems.forEach((item) => {
+    if (item.innerText.toLowerCase().includes(searchTerm.toLowerCase())) {
+      item.classList.remove('hide');;
+    } else {
+      item.classList.add('hide');
+    }
+  });
+  
 }
