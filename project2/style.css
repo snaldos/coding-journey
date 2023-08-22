@@ -1,0 +1,63 @@
+/* Reset some default styles */
+body, h1, h2, h3, p, ul, li {
+  margin: 0;
+  padding: 0;
+}
+
+/* Basic styling for the header */
+.site-header {
+  background-color: #333;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px;
+}
+
+/* Logo styling */
+.logo {
+  font-size: 24px;
+  font-weight: bold;
+}
+
+/* Navigation styling */
+.main-nav ul {
+  list-style: none;
+  display: flex;
+  align-items: center;
+}
+
+.main-nav ul li {
+  margin: 0 15px;
+}
+
+.main-nav ul li a {
+  text-decoration: none;
+  color: white;
+  font-weight: bold;
+  transition: color 0.3s;
+}
+
+.main-nav a:hover {
+  color: #ff9900; /* Change to your preferred hover color */
+}
+
+@media (max-width: 768px) {
+  .site-header {
+      flex-direction: column; /* Stack logo and navigation vertically */
+      align-items: center; /* Center align content */
+      padding: 10px; /* Smaller padding for mobile */
+  }
+
+  .logo {
+    margin-bottom: 20px;
+  }
+
+  .main-nav ul {
+      flex-direction: column; /* Stack navigation links vertically */
+  }
+
+  .main-nav ul li {
+      margin: 10px 0; /* Smaller margins */
+  }
+}
